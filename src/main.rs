@@ -6,6 +6,19 @@ struct Task {
 
 use std::io; 
 
+fn afficher_taches (tasks: &[Task]) {
+    println!("\n--- Liste des taches ---");
+
+    for task in tasks {
+        println!(
+            "#{} [{}] {}",
+            task.id,
+            if task.completed { "x" } else { " " },
+            task.title
+        );
+    }
+}
+
 fn main() {
     let mut tasks: Vec<Task> = vec![
         Task {
@@ -37,18 +50,7 @@ fn main() {
             .expect("Erreur lors de la lecture");
 
         match choix.trim() {
-            "1" => {
-                println!("\n--- liste des tâches ---");
-                
-                for task in &tasks {
-                    println!(
-                        "# {} [{}] {}",
-                        task.id,
-                        if task.completed {"x"} else { " " },
-                        task.title
-                    );
-                }
-            },
+            "1" => afficher_taches(&tasks),
             "2" => {
                 let mut titre = String::new();
 
