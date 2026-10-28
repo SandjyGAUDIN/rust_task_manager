@@ -19,6 +19,20 @@ fn afficher_taches (tasks: &[Task]) {
     }
 }
 
+fn terminer_tache(tasks: &mut [Task], id: u32) {
+    let resultat = tasks.iter_mut().find(|task|task.id == id);
+
+    match resultat {
+        Some(task) => {
+            task.completed = true;
+            println!("Tâche terminée !");
+        }
+        None => {
+            println!("Aucune tâche avec cet ID.");
+        }
+    }
+}
+
 fn main() {
     let mut tasks: Vec<Task> = vec![
         Task {
@@ -96,17 +110,7 @@ fn main() {
                     }
                 };
 
-                let resultat = tasks.iter_mut().find(|task|task.id == id);
-
-                match resultat {
-                    Some(task) => {
-                        task.completed = true;
-                        println!("Tâche terminée !");
-                    }
-                    None => {
-                        println!("Aucune tâche avec cet ID.");
-                    }
-                }
+                terminer_tache(&mut tasks, id);
             }
             "4" => {
                 println!("Aurevoir !");
