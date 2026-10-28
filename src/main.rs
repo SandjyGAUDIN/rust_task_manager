@@ -185,7 +185,7 @@ fn main() {
         Ok(tasks ) => tasks,
         Err(e) => {
             println!("Erreur lors du chargement des tâches : {e}");
-            Vec::new()
+            return;
         }
     };
 
