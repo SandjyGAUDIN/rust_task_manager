@@ -15,19 +15,27 @@ fn sauvegarder_tâches(tasks: &[Task]) -> Result<(), Box<dyn std::error::Error>>
     Ok(())
 }
 
-fn charger_tâches() -> Result<Vec<Task>, Box<dyn std::error::Error>> {
-    let chemin = std::path::Path::new("tasks.json");
 
-    if !chemin.exists() {
-        println!("Pas encore de fichier JSON, on démarre avec une liste vide");
-        return Ok(Vec::new());
-    }
+fn charger_taches() -> Result<Vec<Task>, Box<dyn std::error::Error>> {
+    let contenu = match std::fs::read_to_string("tasks.json") {
+        Ok(contenu) => contenu,
+        Err(e) => {
+            match e.kind() {
+                std::io::ErrorKind::NotFound => {
+                    return Ok(Vec::new());
+                }
+                _ => {
+                    return Err(e.into());
+                }
+            }
+        }
+    };
 
-    let contenu = std::fs::read_to_string(chemin)?;
     let tasks = serde_json::from_str(&contenu)?;
 
     Ok(tasks)
 }
+
 
 
 fn supprimer_tache(tasks: &mut Vec<Task>) {
