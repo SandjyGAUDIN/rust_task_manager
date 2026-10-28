@@ -94,19 +94,16 @@ fn main() {
                     }
                 };
 
-                let mut trouvee = false; 
-                for task in tasks.iter_mut() {
-                    if task.id == id {
-                        task.completed = true;
-                        trouvee = true;
-                        break;
-                    }
-                }
+                let resultat = tasks.iter_mut().find(|task|task.id == id);
 
-                if trouvee {
-                    println!("Tâche terminée !")
-                } else {
-                    println!("Aucune tâche avec cette ID.");
+                match resultat {
+                    Some(task) => {
+                        task.completed = true;
+                        println!("Tâche terminée !");
+                    }
+                    None => {
+                        println!("Aucune tâche avec cet ID.");
+                    }
                 }
             }
             "4" => {
