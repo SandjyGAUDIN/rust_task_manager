@@ -1,0 +1,27 @@
+use std::io; 
+
+fn main() {
+    println!("=== Gestionnaire des tâches ===");
+    println!("1. Afficher les tâches");
+    println!("2. Ajouter une tâche");
+    println!("3. Quitter");
+    println!();
+
+    println!("Votre choix :");
+
+    let mut choix = String::new();
+
+    io::stdin()
+        .read_line(&mut choix)
+        .expect("Erreur lors de la lecture");
+
+    match choix.trim() {
+        "1" => {
+            println!("affichage des taches...");
+            println!("En cours d'ajouts...");
+        },
+        "2" => println!("Ajout d'une tache..."),
+        "3" => println!("Aurevoir !"),
+        _ => println!("Choix invalide"),
+    }
+}
