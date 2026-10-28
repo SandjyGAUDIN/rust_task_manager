@@ -29,6 +29,40 @@ fn charger_tâches() -> Result<Vec<Task>, Box<dyn std::error::Error>> {
     Ok(tasks)
 }
 
+
+fn supprimer_tache(tasks: &mut Vec<Task>) {
+    println!("Quelle tâche souhaitez-vous supprimer ?");
+
+    let mut saisie = String::new();
+
+    io::stdin()
+        .read_line(&mut saisie)
+        .expect("Erreur lors de la lecture");
+
+    let id = match saisie.trim().parse::<u32>() {
+        Ok(id) => id,
+        Err(_) => {
+            println!("Veuillez entrer un ID numérique valide.");
+            return;
+        }
+    };
+
+    match tasks.iter().position(|task| task.id == id) {
+        Some(index) => {
+            tasks.remove(index);
+            println!("Tâche supprimée !");
+            match sauvegarder_tâches(&tasks) {
+                    Ok(()) => println!("Tâches sauvegardées !"),
+                    Err(e) => println!("Erreur lors de la sauvegarde : {e}"),
+                } 
+        }
+        None => {
+            println!("Aucune tâche trouvée avec cet ID.");
+        }
+    }
+}
+
+
 fn afficher_taches (tasks: &[Task]) {
     println!("\n--- Liste des taches ---");
 
@@ -103,7 +137,8 @@ fn main() {
         println!("1. Afficher les tâches");
         println!("2. Ajouter une tâche");
         println!("3. Marquer une tâche comme complété");
-        println!("4. Quitter");
+        println!("4. Marquer une tâche comme complété");
+        println!("5. Quitter");
         println!();
 
         println!("Votre choix :");
@@ -137,6 +172,9 @@ fn main() {
                 terminer_tache(&mut tasks, id);
             }
             "4" => {
+                supprimer_tache(&mut tasks);
+            }
+            "5" => {
                 match sauvegarder_tâches(&tasks) {
                     Ok(()) => println!("Tâches sauvegardées !"),
                     Err(e) => println!("Erreur lors de la sauvegarde : {e}"),
