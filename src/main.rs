@@ -7,6 +7,19 @@ struct Task {
 use std::io; 
 
 fn main() {
+    let mut tasks: Vec<Task> = vec![
+        Task {
+            id: 1,
+            title: String::from("Apprendre Rust"),
+            completed: false,
+        },
+        Task {
+            id: 2,
+            title: String::from("Créer le menu tâche"),
+            completed: true,
+        },
+    ];
+    
     loop {
         println!("=== Gestionnaire des tâches ===");
         println!("1. Afficher les tâches");
