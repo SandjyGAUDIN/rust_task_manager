@@ -19,7 +19,7 @@ fn main() {
             completed: true,
         },
     ];
-    
+
     loop {
         println!("=== Gestionnaire des tâches ===");
         println!("1. Afficher les tâches");
@@ -37,8 +37,16 @@ fn main() {
 
         match choix.trim() {
             "1" => {
-                println!("affichage des taches...");
-                println!("En cours d'ajouts...");
+                println!("\n--- liste des tâches ---");
+                
+                for task in &tasks {
+                    println!(
+                        "# {} [{}] {}",
+                        task.id,
+                        if task.completed {"x"} else { " " },
+                        task.title
+                    );
+                }
             },
             "2" => println!("Ajout d'une tache..."),
             "3" => {
