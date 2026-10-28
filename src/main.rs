@@ -15,6 +15,20 @@ fn sauvegarder_tâches(tasks: &[Task]) -> Result<(), Box<dyn std::error::Error>>
     Ok(())
 }
 
+fn charger_tâches() -> Result<Vec<Task>, Box<dyn std::error::Error>> {
+    let chemin = std::path::Path::new("tasks.json");
+
+    if !chemin.exists() {
+        println!("Pas encore de fichier JSON, on démarre avec une liste vide");
+        return Ok(Vec::new());
+    }
+
+    let contenu = std::fs::read_to_string(chemin)?;
+    let tasks = serde_json::from_str(&contenu)?;
+
+    Ok(tasks)
+}
+
 fn afficher_taches (tasks: &[Task]) {
     println!("\n--- Liste des taches ---");
 
@@ -76,18 +90,13 @@ fn ajouter_tache(tasks: &mut Vec<Task>) {
 
 fn main() {
 
-    let mut tasks: Vec<Task> = vec![
-        Task {
-            id: 1,
-            title: String::from("Apprendre Rust"),
-            completed: false,
-        },
-        Task {
-            id: 2,
-            title: String::from("Créer le menu tâche"),
-            completed: true,
-        },
-    ];
+    let mut tasks = match charger_tâches() {
+        Ok(tasks ) => tasks,
+        Err(e) => {
+            println!("Erreur lors du chargement des tâches : {e}");
+            Vec::new()
+        }
+    };
 
     loop {
         println!("=== Gestionnaire des tâches ===");
