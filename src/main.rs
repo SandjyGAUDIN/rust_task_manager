@@ -1,10 +1,19 @@
+use std::io; 
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize)]
 struct Task {
     id: u32,
     title: String,
     completed: bool,
 }
 
-use std::io; 
+fn sauvegarder_tâches(tasks: &[Task]) -> Result<(), Box<dyn std::error::Error>>{
+    let json = serde_json::to_string_pretty(tasks)?;
+    std::fs::write("tasks.json", json)?;
+
+    Ok(())
+}
 
 fn afficher_taches (tasks: &[Task]) {
     println!("\n--- Liste des taches ---");
@@ -66,6 +75,7 @@ fn ajouter_tache(tasks: &mut Vec<Task>) {
 }
 
 fn main() {
+
     let mut tasks: Vec<Task> = vec![
         Task {
             id: 1,
@@ -118,7 +128,10 @@ fn main() {
                 terminer_tache(&mut tasks, id);
             }
             "4" => {
-                println!("Aurevoir !");
+                match sauvegarder_tâches(&tasks) {
+                    Ok(()) => println!("Tâches sauvegardées !"),
+                    Err(e) => println!("Erreur lors de la sauvegarde : {e}"),
+                }
                 break;
             }
             _ => println!("Choix invalide"),
