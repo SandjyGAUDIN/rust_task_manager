@@ -189,7 +189,7 @@ fn ajouter_tache(tasks: &mut Vec<Task>) {
 
 fn main() {
 
-    let mut tasks = match charger_tâches() {
+    let mut tasks = match charger_taches() {
         Ok(tasks ) => tasks,
         Err(e) => {
             println!("Erreur lors du chargement des tâches : {e}");
