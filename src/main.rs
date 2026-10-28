@@ -52,9 +52,9 @@ fn supprimer_tache(tasks: &mut Vec<Task>) {
             tasks.remove(index);
             println!("Tâche supprimée !");
             match sauvegarder_tâches(&tasks) {
-                    Ok(()) => println!("Tâches sauvegardées !"),
-                    Err(e) => println!("Erreur lors de la sauvegarde : {e}"),
-                } 
+                Ok(()) => println!("Tâches sauvegardées !"),
+                Err(e) => println!("Erreur lors de la sauvegarde : {e}"),
+            } 
         }
         None => {
             println!("Aucune tâche trouvée avec cet ID.");
@@ -83,6 +83,55 @@ fn terminer_tache(tasks: &mut [Task], id: u32) {
         Some(task) => {
             task.completed = true;
             println!("Tâche terminée !");
+        }
+        None => {
+            println!("Aucune tâche avec cet ID.");
+        }
+    }
+}
+
+fn modifier_tache(tasks: &mut [Task]) {
+    let mut id = String::new();
+
+    println!("Quelle tâche souhaitez-vous modifier ? Entrez son ID :");
+
+    io::stdin()
+        .read_line(&mut id)
+        .expect("Erreur lors de la lecture");
+
+    let id = match id.trim().parse::<u32>() {
+        Ok(id) => id,
+        Err(_) => {
+            println!("Veuillez entrer un ID numérique valide.");
+            return;
+        }
+    };
+
+    let resultat = tasks.iter_mut().find(|tasks| tasks.id == id);
+
+    match resultat {
+        Some(task) => {
+            let mut nouveau_titre = String::new();
+
+            println!("Qu'elle est le titre que vous souhaitez mettre à la tâche : {id}");
+
+            io::stdin()
+                .read_line(&mut nouveau_titre)
+                .expect("Erreur lors de la lecture");
+
+            let nouveau_titre = nouveau_titre.trim().to_string();
+
+            if nouveau_titre.is_empty() {
+                println!("Le titre ne peut pas être vide.");
+                return;
+            } else {
+                task.title = nouveau_titre;
+                println!("Titre de la tâche modifié !");
+                match sauvegarder_tâches(&tasks) {
+                    Ok(()) => println!("Tâches sauvegardées !"),
+                    Err(e) => println!("Erreur lors de la sauvegarde : {e}"),
+                } 
+            }
         }
         None => {
             println!("Aucune tâche avec cet ID.");
@@ -146,7 +195,8 @@ fn main() {
         println!("2. Ajouter une tâche");
         println!("3. Marquer une tâche comme complété");
         println!("4. Marquer une tâche comme complété");
-        println!("5. Quitter");
+        println!("5. Modifier le titre d'une tâche");
+        println!("6. Quitter");
         println!();
 
         println!("Votre choix :");
@@ -182,7 +232,8 @@ fn main() {
             "4" => {
                 supprimer_tache(&mut tasks);
             }
-            "5" => {
+            "5" => modifier_tache(&mut tasks),
+            "6" => {
                 match sauvegarder_tâches(&tasks) {
                     Ok(()) => println!("Tâches sauvegardées !"),
                     Err(e) => println!("Erreur lors de la sauvegarde : {e}"),
