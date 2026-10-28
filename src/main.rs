@@ -107,7 +107,15 @@ fn ajouter_tache(tasks: &mut Vec<Task>) {
             continue;
         }
 
-        let id = tasks.len() as u32 + 1;
+        let max_id = tasks.iter().map(|task| task.id).max().unwrap_or(0);
+
+        let id = match max_id.checked_add(1) {
+            Some(id) => id,
+            None => {
+                println!("Impossible de créer une tâche : plus aucun ID disponible.");
+                return;
+            }
+        };
 
         let nouvelle_tache = Task {
             id,
@@ -119,7 +127,7 @@ fn ajouter_tache(tasks: &mut Vec<Task>) {
 
         println!("Tâche ajoutée !");
         break;
-    }
+    };
 }
 
 fn main() {
