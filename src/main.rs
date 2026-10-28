@@ -24,7 +24,8 @@ fn main() {
         println!("=== Gestionnaire des tâches ===");
         println!("1. Afficher les tâches");
         println!("2. Ajouter une tâche");
-        println!("3. Quitter");
+        println!("3. Marquer une tâche comme complété");
+        println!("4. Quitter");
         println!();
 
         println!("Votre choix :");
@@ -77,6 +78,38 @@ fn main() {
                 println!("Tâche ajoutée !");
             }
             "3" => {
+                println!("Quel ID de tâche veux-tu terminer ?");
+
+                let mut saisie = String::new();
+
+                io::stdin()
+                    .read_line(&mut saisie)
+                    .expect("Erreur lors de la lecture");
+
+                let id = match saisie.trim().parse::<u32>() {
+                    Ok(id) => id,
+                    Err(_) => {
+                        println!("Veuillez entrez un id numérique valide.");
+                        continue;
+                    }
+                };
+
+                let mut trouvee = false; 
+                for task in tasks.iter_mut() {
+                    if task.id == id {
+                        task.completed = true;
+                        trouvee = true;
+                        break;
+                    }
+                }
+
+                if trouvee {
+                    println!("Tâche terminée !")
+                } else {
+                    println!("Aucune tâche avec cette ID.");
+                }
+            }
+            "4" => {
                 println!("Aurevoir !");
                 break;
             }
