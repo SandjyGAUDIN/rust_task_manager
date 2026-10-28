@@ -202,7 +202,7 @@ fn main() {
         println!("1. Afficher les tâches");
         println!("2. Ajouter une tâche");
         println!("3. Marquer une tâche comme complété");
-        println!("4. Marquer une tâche comme complété");
+        println!("4. Supprimer une tâche");
         println!("5. Modifier le titre d'une tâche");
         println!("6. Quitter");
         println!();
