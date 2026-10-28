@@ -48,7 +48,34 @@ fn main() {
                     );
                 }
             },
-            "2" => println!("Ajout d'une tache..."),
+            "2" => {
+                let mut titre = String::new();
+
+                println!("Entrez le titre de votre nouvelle tâche");
+
+                io::stdin()
+                    .read_line(&mut titre)
+                    .expect("erreur lors de la lecture");
+
+                let titre = titre.trim().to_string();
+
+                if titre.is_empty() {
+                    println!("Le titre ne peut pas être vide.");
+                    continue;
+                }
+
+                let id = tasks.len() as u32 + 1;
+
+                let nouvelle_tache = Task {
+                    id,
+                    title: titre,
+                    completed: false,
+                };
+
+                tasks.push(nouvelle_tache);
+
+                println!("Tâche ajoutée !");
+            }
             "3" => {
                 println!("Aurevoir !");
                 break;
