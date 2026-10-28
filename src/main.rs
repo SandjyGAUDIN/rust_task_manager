@@ -1,3 +1,9 @@
+struct Task {
+    id: u32,
+    title: String,
+    completed: bool,
+}
+
 use std::io; 
 
 fn main() {
