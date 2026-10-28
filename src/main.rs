@@ -33,6 +33,38 @@ fn terminer_tache(tasks: &mut [Task], id: u32) {
     }
 }
 
+fn ajouter_tache(tasks: &mut Vec<Task>) {
+    loop {
+        let mut titre = String::new();
+
+        println!("Entrez le titre de votre nouvelle tache");
+
+        io::stdin()
+            .read_line(&mut titre)
+            .expect("Erreur lors de la lecture.");
+
+        let titre = titre.trim().to_string();
+
+        if titre.is_empty() {
+            println!("Le titre ne peut pas être vide.");
+            continue;
+        }
+
+        let id = tasks.len() as u32 + 1;
+
+        let nouvelle_tache = Task {
+            id,
+            title: titre,
+            completed: false,
+        };
+
+        tasks.push(nouvelle_tache);
+
+        println!("Tâche ajoutée !");
+        break;
+    }
+}
+
 fn main() {
     let mut tasks: Vec<Task> = vec![
         Task {
@@ -65,34 +97,7 @@ fn main() {
 
         match choix.trim() {
             "1" => afficher_taches(&tasks),
-            "2" => {
-                let mut titre = String::new();
-
-                println!("Entrez le titre de votre nouvelle tâche");
-
-                io::stdin()
-                    .read_line(&mut titre)
-                    .expect("erreur lors de la lecture");
-
-                let titre = titre.trim().to_string();
-
-                if titre.is_empty() {
-                    println!("Le titre ne peut pas être vide.");
-                    continue;
-                }
-
-                let id = tasks.len() as u32 + 1;
-
-                let nouvelle_tache = Task {
-                    id,
-                    title: titre,
-                    completed: false,
-                };
-
-                tasks.push(nouvelle_tache);
-
-                println!("Tâche ajoutée !");
-            }
+            "2" => ajouter_tache(&mut tasks),
             "3" => {
                 println!("Quel ID de tâche veux-tu terminer ?");
 
